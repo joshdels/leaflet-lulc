@@ -1,0 +1,35 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+}
+
+header {
+  grid-column: span 12;
+  background-color: antiquewhite; 
+  text-align: center;
+  font-size: 15px;
+}
+
+header h1 {
+  padding: 20px 30px;
+  margin: 0;  
+  text-transform: uppercase;
+  font-weight: bold;
+  letter-spacing: 5px;
+}
+
+.sidebar {
+  background-color: aqua;
+  grid-column: span 2;
+}
+
+.map {
+  grid-column: span 10;
+  height: 90.5vh;
+}
+
