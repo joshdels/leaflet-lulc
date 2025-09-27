@@ -3,26 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-  <link rel="stylesheet" href="styles.css">
+  <title>Land Use and Land Cover</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-</head>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" crossorigin="anonymous" />
 <body>
   <div class="grid">
     <section class="sidebar">
       <h1>Land Use and Land Cover</h1>
       <div class="instruction">
-        <h3>Instruction</h3>
-        This filter's the Land Use and Land cover in the Municipality 
+        <h3>Description</h3>
+        <ul>
+          <li><i class="fa-regular fa-circle-check"></i>  Shows land use area for each barangay</li>
+          <li><i class="fa-regular fa-circle-check"></i>  Helps visualize municipal land distribution</li>
+          <li><i class="fa-regular fa-circle-check"></i>  Supports chart and map integration</li>
+        </ul>
       </div>
       <div class="chart-container">
         <canvas id="myChart"></canvas>
       </div>
-      <footer>
-        <img src="" alt="">
-        <p>TopmapSolutions</p>
+      <footer class="footer">
+        <img src="logo.png" alt="">
+        <a href="https://topmapsolutions.com/">TopmapSolutions</a>
       </footer>
     </section>
     <section class="map" id="map"></section>

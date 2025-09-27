@@ -29,53 +29,20 @@ var results = [];
 var geoserverUrl = "http://localhost:8080/geoserver/josh/wfs";
 
 function handleStyles(object) {
-  var color;
-  var fillColor;
-
-  switch(object) {
-    case "Built-up":
-      color = '#e74c3c';
-      fillColor = '#e74c3c';
-      break;
-    case "Open/Barren":
-      color = '#c8cdd1';
-      fillColor = '#c8cdd1'
-      break;
-    case "Inland Water":
-      color = '#1a27e7';
-      fillColor = '#1a27e7'
-      break;
-    case "Brush/Shrubs":
-      color = '#00ec33';
-      fillColor = '#00ec33'
-      break;
-    case "Grassland":
-      color = '#dfa335';
-      fillColor = '#dfa335'
-      break;
-    case "Perennial Crop":
-      color = '#fbff00';
-      fillColor = '#fbff00'
-      break;
-    case "Annual Crop":
-      color = '#12c42a';
-      fillColor = '#12c42a'
-      break;
-    case "Fishpond":
-      color = '#0400fa';
-      fillColor = '#0400fa'
-      break;
-    case "Open Forest":
-      color = '#126426';
-      fillColor = '#126426'
-      break;
-    default:
-      color = '#808b96';
-      fillColor = '#808b96'
-      break;
+  const color = {
+    'Built-up': '#e74c3c',
+    "Open/Barren": '#c8cdd1',
+    "Inland Water": '#1a27e7',
+    "Brush/Shrubs": '#2fec00ff',
+    "Grassland": '#dfa335',
+    "Perennial Crop": '#fbff00ff',
+    "Annual Crop": '#acd128ff',
+    "Fishpond": '#0400fa',
+    "Open Forest": '#126426'
   }
 
-  return {color:color, fillColor:fillColor, fillOpacity: 1}
+  const fill = color[object] || '#808b96'
+  return {color:fill, fillColor:fill, fillOpacity: 1}
 }
 
 // Data
@@ -86,7 +53,6 @@ fetch(
   .then((res) => res.json())
   .then((data) => {
     lulcData = data;
-    console.log(data.features),
 
     lulc = L.geoJSON(data, {
       pane: "lulcPane",
@@ -95,14 +61,15 @@ fetch(
       }
     }).addTo(map);
 
-
     return fetch(
       geoserverUrl +
         "?service=WFS&version=1.0.0&request=GetFeature&typeName=josh:tagum_adm4&outputFormat=application/json"
     );
   })
   .then((res) => res.json())
+  
   .then((data) => {
+    let selectedLayer = null;
     boundary = L.geoJSON(data, {
       pane: "boundaryPane",
       style: {
@@ -111,7 +78,27 @@ fetch(
         fillOpacity: 0,
       },
       onEachFeature: function (feature, layer) {
+
         layer.on("click", function () {
+          if (selectedLayer && selectedLayer !== layer ) {
+            selectedLayer.setStyle({
+              fillColor: null,
+              fillOpacity: 0,
+              color: 'black',
+              weight: 2,
+            });
+          }
+          layer.setStyle({
+            color: 'blue',
+            weight: 4,
+            fillColor: 'blue',
+            fillOpacity: 0.2,
+          });
+          selectedLayer = layer;
+
+          map.fitBounds(layer.getBounds(), {padding: [30, 30] })
+
+          //Filter queries
           let barangay = feature.properties.adm4_en;
           let filtered = handleFilterLulc(barangay);
           updateChart(filtered, barangay);
@@ -135,7 +122,6 @@ function handleFilterLulc(boundary) {
   return results;
 }
 
-
 ///// Chart
 const labels = results.map(p => p.class_name);
 const values = results.map(p => p.area_ha);
@@ -158,7 +144,12 @@ const myChart = new Chart(ctx, {
     responsive: true,
     maintainAspectRatio: false,
     plugins: {
-      legend: { display: false } 
+      legend: { display: false } ,
+      title: {
+        display: true,
+        text: 'Tagum City',
+        font: { size: 17}
+      }
     }
    }
 });
@@ -169,7 +160,9 @@ function updateChart(dataArray, barangay) {
   myChart.data.datasets[0].data = dataArray.map(p => p.area_ha);
   myChart.data.datasets[0].backgroundColor = dataArray.map(p => handleStyles(p.class_name).fillColor);
   myChart.data.datasets[0].borderColor = dataArray.map(p => handleStyles(p.class_name).fillColor);    
-  myChart.data.datasets[0].label = `${barangay}'s Land Use Area`;
+  myChart.data.datasets[0].label = `Area`;
+
+  myChart.options.plugins.title.text = `Brgy. ${barangay}`;
   myChart.update();
 }
 
