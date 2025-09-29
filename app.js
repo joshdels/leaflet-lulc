@@ -26,7 +26,7 @@ var lulc = null;
 var lulcData = null;
 var results = [];
 
-var geoserverUrl = "http://localhost:8080/geoserver/josh/wfs";
+var geoserverUrl = "http://149.28.129.119:8081/geoserver/urban/wfs";
 
 function handleStyles(object) {
   const color = {
@@ -48,7 +48,7 @@ function handleStyles(object) {
 // Data
 fetch(
   geoserverUrl +
-    "?service=WFS&version=1.0.0&request=GetFeature&typeName=josh:lulc_clipped&outputFormat=application/json"
+    "?service=WFS&version=1.0.0&request=GetFeature&typeName=urban:lulc_clipped&outputFormat=application/json"
 )
   .then((res) => res.json())
   .then((data) => {
@@ -63,7 +63,7 @@ fetch(
 
     return fetch(
       geoserverUrl +
-        "?service=WFS&version=1.0.0&request=GetFeature&typeName=josh:tagum_adm4&outputFormat=application/json"
+        "?service=WFS&version=1.0.0&request=GetFeature&typeName=urban:tagum_adm4&outputFormat=application/json"
     );
   })
   .then((res) => res.json())
