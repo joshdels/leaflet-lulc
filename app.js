@@ -26,7 +26,7 @@ var lulc = null;
 var lulcData = null;
 var results = [];
 
-var geoserverUrl = "http://149.28.129.119:8081/geoserver/urban/wfs";
+var geoserverUrl = "https://geo-database.topmapsolutions.com/geoserver/urban/wfs";
 
 function handleStyles(object) {
   const color = {
