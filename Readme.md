@@ -2,6 +2,7 @@
 
 ### Description
 This calculates the land cover area and shows it in a chart
+view it here https://landuseandlandcover.vercel.app/
 
 ### Image
 ![desktopview](./img/1.PNG)
